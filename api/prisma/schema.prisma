@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  username String
+  password String
+  level    String @default("admin")
+  status   String
+}
+
+model Member {
+  id              Int               @id @default(autoincrement())
+  name            String
+  phone           String
+  gender          String            @default("male")
+  registerDate    DateTime
+  expireDate      DateTime
+  Membership      Membership[]
+  Checkin         Checkin[]
+  CourseAndMember CourseAndMember[]
+}
+
+model Membership {
+  id        Int      @id @default(autoincrement())
+  member_id Int
+  Member    Member   @relation(fields: [member_id], references: [id])
+  money     Int
+  pay_date  DateTime
+  remark    String?
+}
+
+model Checkin {
+  id           Int      @id @default(autoincrement())
+  member_id    Int
+  Member       Member   @relation(fields: [member_id], references: [id])
+  checkin_date DateTime @default(now())
+}
+
+model Device {
+  id     Int    @id @default(autoincrement())
+  name   String
+  price  Int
+  remark String
+  qty    Int
+}
+
+model EmployeeAndTrainer {
+  id               Int                @id @default(autoincrement())
+  gender           String
+  name             String
+  phone            String
+  address          String
+  status           String             @default("use")
+  level            String             @default("employee")
+  salary           Int
+  CourseAndTrainer CourseAndTrainer[]
+  username         String?
+  password         String?
+}
+
+model Course {
+  id               Int                @id @default(autoincrement())
+  name             String
+  price            Int
+  detail           String
+  remark           String
+  dayPerWeek       Int
+  hourPerDay       Int
+  CourseAndTrainer CourseAndTrainer[]
+  status           String             @default("use")
+  CourseAndMember  CourseAndMember[]
+}
+
+model CourseAndTrainer {
+  id        Int                @id @default(autoincrement())
+  course_id Int
+  user_id   Int
+  Course    Course             @relation(fields: [course_id], references: [id])
+  Trainer   EmployeeAndTrainer @relation(fields: [user_id], references: [id])
+}
+
+model CourseAndMember {
+  id         Int      @id() @default(autoincrement())
+  course_id  Int
+  member_id  Int
+  Course     Course   @relation(fields: [course_id], references: [id])
+  Member     Member   @relation(fields: [member_id], references: [id])
+  qty        Int
+  remark     String
+  createDate DateTime @default(now())
+  expireDate DateTime
+  price      Int
+}
+
+model PayRecord {
+  id      Int      @id @default(autoincrement())
+  name    String
+  qty     Int
+  price   Int
+  payDate DateTime
+  remark  String
+}
