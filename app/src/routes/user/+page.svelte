@@ -20,14 +20,12 @@
     password = "";
   };
 
-  const save=()=>{
-
-  }
+  const save = () => {};
 </script>
 
 <div class="mt-3">
   <div>ระดับ</div>
-  <input type="radio" value="employee" name="level" bind:group={level} />พนักงาน
+  <input class="mr-2" type="radio" value="employee" name="level" bind:group={level} />พนักงาน
 </div>
 
 <div class="mt-3">
@@ -40,6 +38,6 @@
   <input class="form-control" bind:value={password} />
 </div>
 
-<button class="mt-3 btn btn-primaryn" on:click={()=>save()}>
-    <i class="fa fa-check me-2"></i>บันทึก
+<button class="mt-3 btn btn-primary" on:click={() => save()}>
+  <i class="fa fa-check me-2"></i>บันทึก
 </button>

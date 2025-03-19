@@ -23,7 +23,12 @@
 
         if (res.data.token !== undefined) {
           localStorage.setItem("token", res.data.token);
-          goto("/home");
+          goto("/");
+        }
+        if (res.data.token) {
+          goto("/home").then(() => {
+            window.location.reload();
+          });
         }
       }
     } catch (e) {
